@@ -43,8 +43,8 @@ namespace WifiPicker
 		// Columnas aquí para que el Designer de VS no las borre
 		private void SetupListView()
 		{
-			lvNetworks.Columns.Add("Red (SSID)", 155);
-			lvNetworks.Columns.Add("Señal", 130);
+			lvNetworks.Columns.Add("Red (SSID)", 220);
+			lvNetworks.Columns.Add("Señal", 180);
 			lvNetworks.Columns.Add("Seguridad", 135);
 			lvNetworks.Columns.Add("Guardada", 150);
 			lvNetworks.HideSelection = false;
@@ -59,6 +59,7 @@ namespace WifiPicker
 			btnRefresh.Click += async (_, _) => await RefreshAsync();
 			btnConnect.Click += async (_, _) => await ConnectAsync();
 			btnDisconnect.Click += async (_, _) => await DisconnectAsync();
+			OlvidartBtn.Click += async (_, _) => await OlvidarRedAsync();
 
 			chkShowPass.CheckedChanged += (_, _) =>
 				txtPassword.UseSystemPasswordChar = !chkShowPass.Checked;
@@ -145,7 +146,27 @@ namespace WifiPicker
 
 		private async Task<List<WifiNetwork>> ScanAsync()
 		{
+			// Fuerza un nuevo escaneo — si no, Windows devuelve el caché
+			// y estando conectado nunca aparecen redes nuevas.
+			// netsh wlan scan vuelve al instante, pero el scan real dura
+			// 3-6s (más cuando estamos conectados). Hacemos polling: leemos
+			// la lista cada segundo hasta que el conteo se estabilice.
+			await RunAsync("netsh wlan scan");
+			await Task.Delay(1500); // mínimo razonable
+
 			string raw = await RunAsync("netsh wlan show networks mode=bssid");
+			int lastCount = SsidBlockRegex().Matches(raw).Count;
+
+			for (int i = 0; i < 5; i++) // hasta ~5s extra
+			{
+				await Task.Delay(1000);
+				string next = await RunAsync("netsh wlan show networks mode=bssid");
+				int count = SsidBlockRegex().Matches(next).Count;
+				raw = next;
+				if (count == lastCount && count > 0) break; // estable → scan terminó
+				lastCount = count;
+			}
+
 			var result = new List<WifiNetwork>();
 
 			var blocks = SsidBlockRegex().Split(raw).Skip(1).ToArray();
