@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cp \"/c/Users/matia/Desktop/Elegir Wifi/Elegir Wifi/Elegir Wifi.slnx\" \"/c/Users/matia/Desktop/Elegir Wifi/Elegir Wifi.slnx\")",
+      "Bash(rm \"/c/Users/matia/Desktop/Elegir Wifi/Elegir Wifi/Elegir Wifi.slnx\")",
+      "Bash(dotnet publish:*)",
+      "Bash(cmd.exe /c \"cd /d \\\\\"C:\\\\Users\\\\matia\\\\Desktop\\\\Elegir Wifi\\\\Elegir Wifi\\\\\" && dotnet publish -c Release\")",
+      "Bash(powershell.exe -Command \"Set-Location 'C:\\\\Users\\\\matia\\\\Desktop\\\\Elegir Wifi\\\\Elegir Wifi'; dotnet publish -c Release 2>&1\")",
+      "Read(//c/Program Files/dotnet/**)",
+      "Read(//c/Program Files \\(x86\\)/dotnet/**)",
+      "Read(//c/Users/matia/**)",
+      "Bash(powershell.exe -Command '& { $env:Path -split '\\\\'';'\\\\'' | Where-Object { $_ -match '\\\\''dotnet'\\\\'' } }')",
+      "Bash(powershell.exe -Command \"& 'C:\\\\Program Files\\\\dotnet\\\\dotnet.exe' publish 'C:\\\\Users\\\\matia\\\\Desktop\\\\Elegir Wifi\\\\Elegir Wifi\\\\Elegir Wifi.csproj' -c Release 2>&1\")",
+      "Bash(powershell.exe -Command ':*)",
+      "Bash(powershell.exe -Command \"& 'C:\\\\Program Files\\\\Microsoft Visual Studio\\\\18\\\\Community\\\\VC\\\\Tools\\\\MSVC\\\\14.50.35717\\\\bin\\\\Hostx64\\\\x64\\\\editbin.exe' /SUBSYSTEM:WINDOWS,6.01 'C:\\\\Users\\\\matia\\\\Desktop\\\\Elegir Wifi\\\\Elegir Wifi\\\\bin\\\\Release\\\\netcoreapp3.1-windows\\\\win7-x64\\\\publish\\\\Elegir Wifi.exe' 2>&1\")",
+      "Bash(powershell.exe -Command \"& 'C:\\\\Program Files\\\\dotnet\\\\dotnet.exe' build 'C:\\\\Users\\\\matia\\\\Desktop\\\\Elegir Wifi\\\\Elegir Wifi\\\\Elegir Wifi.csproj' -c Release 2>&1\")",
+      "Bash(dotnet build *)",
+      "PowerShell(Rename-Item -Path \"C:\\\\Users\\\\matia\\\\Desktop\\\\Elegir Wifi\" -NewName \"WifiPicker\" -ErrorAction SilentlyContinue; if \\($?\\) { \"OK\" } else { $Error[0].Exception.Message })"
+    ]
+  }
+}
